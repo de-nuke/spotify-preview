@@ -1,17 +1,13 @@
-API_GATEWAY_EVENT = {
+from typing import Any, Dict
+
+API_GATEWAY_EVENT: Dict[str, Any] = {
     "resource": "/preview",
     "path": "/preview",
     "httpMethod": "GET",
     "headers": None,
     "multiValueHeaders": None,
-    "queryStringParameters": {
-        "url": None
-    },
-    "multiValueQueryStringParameters": {
-        "url": [
-            None
-        ]
-    },
+    "queryStringParameters": {"url": None},
+    "multiValueQueryStringParameters": {"url": [None]},
     "pathParameters": None,
     "stageVariables": None,
     "requestContext": {
@@ -35,7 +31,10 @@ API_GATEWAY_EVENT = {
             "cognitoAuthenticationType": None,
             "userArn": "arn:aws:iam::359988466181:root",
             "apiKeyId": "test-invoke-api-key-id",
-            "userAgent": "aws-internal/3 aws-sdk-java/1.12.162 Linux/5.4.176-103.347.amzn2int.x86_64 OpenJDK_64-Bit_Server_VM/25.322-b06 java/1.8.0_322 vendor/Oracle_Corporation cfg/retry-mode/standard",
+            "userAgent": (
+                "aws-internal/3 aws-sdk-java/1.12.162 Linux/5.4.176-103.347.amzn2int.x86_64 "
+                "OpenJDK_64-Bit_Server_VM/25.322-b06 java/1.8.0_322 vendor/Oracle_Corporation cfg/retry-mode/standard"
+            ),
             "accountId": "359988466181",
             "caller": "359988466181",
             "sourceIp": "test-invoke-source-ip",
@@ -132,7 +131,7 @@ SPOTIFY_TRACK_HTML_CONTENT = """
     <script id="seo" type="application/json">{}</script>
     <script type="text/plain" id="remote-configuration">
         eyIjdiI6IjEiLCJlbmFibGVNdWx0aVZpc2l0IjoiY29udHJvbCIsImVuYWJsZUludGVybmFsVHJhY2tMaW5rcyI6ImNvbnRyb2wiLCJlbmFibGVOZXdQbGF5bGlzdENyZWF0aW9uIjp0cnVlLCJlbmFibGVVc2VyUHJvZmlsZUVkaXQiOnRydWUsImVuYWJsZUNsaWVudFhDb25jZXJ0c0h1YiI6dHJ1ZSwiZW5hYmxlQ2xpZW50WENvbmNlcnRzRm9yQXJ0aXN0UGFnZSI6dHJ1ZSwicG9kY2FzdE1ldGFkYXRhU291cmNlIjoiUEFUSEZJTkRFUiIsImVuYWJsZVNvdW5kYmV0dGVyU29jaWFsTGluayI6dHJ1ZSwiZW5hYmxlU3VidGl0bGVzVXNpbmdIYXJtb255Ijp0cnVlLCJlbmFibGVTdWJ0aXRsZXNBdXRvZ2VuZXJhdGVkTGFiZWwiOnRydWUsImVuYWJsZUhUTUxEZXNjcmlwdGlvbnMiOnRydWUsImVuYWJsZUFydGlzdExpa2VkU29uZ3MiOnRydWUsImVuYWJsZUJsb2NrVXNlcnMiOnRydWUsImVuYWJsZUx5cmljc0ZlYXR1cmVDbGllbnRTaWRlIjp0cnVlLCJlbmFibGVDb3ZpZEh1YkJhbm5lciI6dHJ1ZSwiZW5hYmxlQ29udGVudEluZm9ybWF0aW9uTWVzc2FnZSI6dHJ1ZSwiZW5hYmxlU2VhcmNoTW9kYWwiOnRydWUsImVuYWJsZVVyaUxpbmtzIjp0cnVlLCJlbmFibGVCbGVuZEludml0YXRpb24iOiJNVUxUSV9VU0VSIiwiI2NvbmZpZ3VyYXRpb25Bc3NpZ25tZW50SWQiOiJkMDYwYjc1Zi0zODNiLWYyZDQtNTU3Ni0xOTliOTZiODE1MmMiLCIjZ3JvdXBJZHMiOnsiZW5hYmxlTXVsdGlWaXNpdCI6MTAzOTUwNywiZW5hYmxlSW50ZXJuYWxUcmFja0xpbmtzIjoxMDQxODQwLCJlbmFibGVJbmxpbmVDdXJhdGlvbiI6MzI4NDEsImVuYWJsZU5ld1BsYXlsaXN0Q3JlYXRpb24iOjMwMzE0LCJlbmFibGVVc2VyUHJvZmlsZUVkaXQiOjMzNDMyLCJlbmFibGVDbGllbnRYQ29uY2VydHNIdWIiOjM0MDU1LCJlbmFibGVDbGllbnRYQ29uY2VydHNGb3JBcnRpc3RQYWdlIjozNDcwNSwicG9kY2FzdE1ldGFkYXRhU291cmNlIjo4NTQ2LCJlbmFibGVTb3VuZGJldHRlclNvY2lhbExpbmsiOjM0OTc3LCJlbmFibGVTdWJ0aXRsZXNVc2luZ0hhcm1vbnkiOjM1NTE5LCJlbmFibGVTdWJ0aXRsZXNBdXRvZ2VuZXJhdGVkTGFiZWwiOjM1Nzc1LCJlbmFibGVJbmxpbmVDdXJhdGlvbkRlc2t0b3AiOjMzMTU5MywiZW5hYmxlSFRNTERlc2NyaXB0aW9ucyI6MTAwMjYwNiwiZW5hYmxlQXJ0aXN0TGlrZWRTb25ncyI6MTAwMjQ3NCwiZW5hYmxlTXVzaWNBbmRUYWxrIjoxMDA4NTA5LCJlbmFibGVCbG9ja1VzZXJzIjoxMDIxNTI0LCJlbmFibGVMeXJpY3NGZWF0dXJlQ2xpZW50U2lkZSI6MTAyNzExMSwiZW5hYmxlRW5jb3JlV2ViTWlncmF0aW9uIjoxMDI5NjEyLCJlbmFibGVJY29uc1JlZHJhdyI6MTAyMjI3MCwiZW5hYmxlQ292aWRIdWJCYW5uZXIiOjEwMzUwNjMsImVuYWJsZUNvbnRlbnRJbmZvcm1hdGlvbk1lc3NhZ2UiOjEwMzUxNzQsImVuYWJsZVNlYXJjaE1vZGFsIjoxMDM1MzE3LCJlbmFibGVVcmlMaW5rcyI6MTAzNjA2OSwiZW5hYmxlQmxlbmRJbnZpdGF0aW9uIjoxMDM2MDY5fSwiI2ZldGNoVGltZU1pbGxpcyI6MTY0Nzk0NDE3NDUwOSwiI2NvbnRleHRIYXNoIjoiNWMxMmQ1NWMzMjJhMjkzNCJ9
-    
+
     </script>
     <script src="https://open.scdn.co/cdn/build/web-player/web-player.79f63296.js"></script>
     <script src="https://open.scdn.co/cdn/build/web-player/vendor~web-player.8ab8967f.js"></script>

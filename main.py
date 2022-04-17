@@ -1,7 +1,8 @@
 import json
-import re
 import os
+import re
 from collections import defaultdict
+from typing import Any, Dict, List, TypedDict, Union
 
 import requests
 from bs4 import BeautifulSoup
@@ -17,31 +18,40 @@ class NoDataError(RuntimeError):
     pass
 
 
-def response(status_code, body):
+SongData = TypedDict(
+    "SongData",
+    {"title": str, "description": str, "audio_url": str, "image_url": str, "url": str},
+)
+MetaProps = Dict[str, List[str]]
+RequestType = Dict[str, Any]
+ResponseType = TypedDict("ResponseType", {"statusCode": int, "headers": Dict[str, Any], "body": str})
+
+
+def response(status_code: int, body: Any) -> ResponseType:
     return {
         "statusCode": int(status_code),
-        'headers': {
-            'Access-Control-Allow-Headers': os.environ.get("ACCESS_CONTROL_ALLOW_HEADERS", ""),
-            'Access-Control-Allow-Origin': os.environ.get("ACCESS_CONTROL_ALLOW_ORIGIN", ""),
-            'Access-Control-Allow-Methods': os.environ.get("ACCESS_CONTROL_ALLOW_METHODS", "")
+        "headers": {
+            "Access-Control-Allow-Headers": os.environ.get("ACCESS_CONTROL_ALLOW_HEADERS", ""),
+            "Access-Control-Allow-Origin": os.environ.get("ACCESS_CONTROL_ALLOW_ORIGIN", ""),
+            "Access-Control-Allow-Methods": os.environ.get("ACCESS_CONTROL_ALLOW_METHODS", ""),
         },
-        "body": body if isinstance(body, str) else json.dumps(body)
+        "body": body if isinstance(body, str) else json.dumps(body),
     }
 
 
-def get_url(request):
+def get_url(request: RequestType) -> str:
     try:
         return request["queryStringParameters"]["url"]
     except KeyError:
         return ""
 
 
-def build_track_url(track_id: str):
+def build_track_url(track_id: str) -> str:
     url_template = "https://open.spotify.com/track/{track_id}"
     return url_template.format(track_id=track_id)
 
 
-def validate_spotify_url(url: str):
+def validate_spotify_url(url: str) -> str:
     """
     URL might be one of those:
     1. Spotify track URL (https://open.spotify.com/track/<track-id>)
@@ -51,12 +61,7 @@ def validate_spotify_url(url: str):
     if not url:
         raise ValidationError("'url' parameter required")
 
-    url_regex = re.compile(
-        r"^https?://"
-        r"open\.spotify\.com/track/"
-        r"(?P<track_id>[A-Za-z0-9]+)"
-        r"/?\??\S*$"
-    )
+    url_regex = re.compile(r"^https?://" r"open\.spotify\.com/track/" r"(?P<track_id>[A-Za-z0-9]+)" r"/?\??\S*$")
     uri_regex = re.compile("^spotify:track:(?P<track_id>[A-Za-z0-9]+)$")
     track_id_regex = re.compile("^(?P<track_id>[A-Za-z0-9]+)$")
 
@@ -68,13 +73,13 @@ def validate_spotify_url(url: str):
     raise ValidationError("Invalid track identifier. It must be URL, URI or ID")
 
 
-def get_content(url: str):
-    response = requests.get(url)
-    response.raise_for_status()
-    return response.content
+def get_content(url: str) -> bytes:
+    resp = requests.get(url)
+    resp.raise_for_status()
+    return resp.content
 
 
-def get_meta_props(content: str):
+def get_meta_props(content: str) -> MetaProps:
     html = BeautifulSoup(content, features="html.parser")
     props = defaultdict(list)
     for tag in html.find_all("meta"):
@@ -90,12 +95,12 @@ def get_meta_props(content: str):
     return props
 
 
-def get_song_data(meta_props):
-    def prep_value(value):
+def get_song_data(meta_props: MetaProps) -> SongData:
+    def prep_value(value: Union[List[str], str]) -> str:
         if isinstance(value, list):
             if len(value) == 1:
                 return value[0]
-        return value
+        return str(value)
 
     return {
         "title": prep_value(meta_props.get("og:title", "")),
@@ -106,7 +111,7 @@ def get_song_data(meta_props):
     }
 
 
-def get_response(request):
+def get_response(request: RequestType) -> ResponseType:
     url = get_url(request)
     url = validate_spotify_url(url)
     content = get_content(url)
@@ -119,14 +124,12 @@ def get_response(request):
     return response(200, song_data)
 
 
-def handle_error(error):
-    error_body = {
-        "detail": str(error)
-    }
+def handle_error(error: Exception) -> ResponseType:
+    error_body = {"detail": str(error)}
     return response(400, error_body)
 
 
-def lambda_handler(event, context):
+def lambda_handler(event: RequestType, context: Any) -> ResponseType:
     try:
         return get_response(event)
     except (ValidationError, NoDataError) as e:
