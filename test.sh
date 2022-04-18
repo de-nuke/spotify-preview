@@ -7,8 +7,8 @@ else
   if [ ! -f .env ]
   then
     export $(cat .env | xargs)
-    python -m unittest test.py
+    python -m unittest src/test.py
   else
-    python -m unittest test.py
+    python -m unittest src/test.py
   fi
 fi

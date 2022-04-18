@@ -16,3 +16,5 @@ echo "ACCESS_CONTROL_ALLOW_HEADERS=Content-Type" >> .env
 echo "ACCESS_CONTROL_ALLOW_METHODS=OPTIONS,GET" >> .env
 echo "ACCESS_CONTROL_ALLOW_ORIGIN=*" >> .env
 deactivate
+export PYTHONPATH=":$(pwd)/src/"
+echo "export PYTHONPATH=${PYTHONPATH}" >> .venv/bin/activate

@@ -8,4 +8,4 @@ mkdir -p dist
   zip -r dist/libs.zip python;
   rm python
 )
-zip dist/code *.py
+zip -D dist/code src/*

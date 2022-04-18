@@ -5,4 +5,4 @@ AWS Lambda function to get Spotify song's metadata
 1. `chmod +x *.sh` – set execute permission on bash scripts for your user
 2. `source initproject.sh` – create virtualenv and install dependencies.
 3. `activate` – activate virtualenv
-4. `test.sh` – run test to check if everything works
+4. `make test` – run test to check if everything works (or just `./test.sh` if you don't have `make`)
